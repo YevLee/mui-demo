@@ -1,0 +1,103 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../css/mui.min.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<script src="../js/mui.min.js"></script>
+		<script type="text/javascript">
+			mui.init(
+				{
+					 preloadPages:[{
+        id:'detail.html',
+        url:'detail.html'           
+        }
+        ]
+				}
+			);
+			mui.plusReady(function() {
+				mui.ajax('https://api.douban.com/v2/movie/in_theaters', {
+					data: {
+						start: 0,
+						acount: 20
+					},
+					dataType: 'json', //服务器返回json格式数据
+					type: 'post', //HTTP请求类型
+					timeout: 10000, //超时时间设置为10秒；
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					success: function(data) {
+						//服务器返回响应，根据响应结果，分析是否登录成功；
+
+						var subjects = data.subjects;
+						var subjectsHtml="<ul class='mui-table-view'>"
+						for(var i in subjects) {
+							subjectsHtml += "<li class='mui-table-view-cell mui-media' id="+subjects[i].id+"><a class='mui-list-item' href='javascript:;'"+ 
+								"<img class='mui-media-object mui-pull-left' src=" + subjects[i].images.small +
+								" " + "/><div class='mui-media-body'>" +
+								subjects[i].title +
+								"<p class='mui-ellipsis'>" +
+								subjects[i].title + "</p></div></a></li>"
+						};
+						subjectsHtml+="</ul>"
+						document.querySelector(".mui-table").innerHTML = subjectsHtml
+					},
+					error: function(xhr, type, errorThrown) {
+						//异常处理；
+						console.log(type);
+					}
+				});
+				var gallery = mui('.mui-slider');
+				gallery.slider({
+					interval: 5000 //自动轮播周期，若为0则不自动播放，默认为0；
+				});
+				
+				//点击到详情页
+				mui('body').on('tap','.mui-table-view-cell',function(e){
+					//mui.toast(this);
+					var movieId=this.getAttribute("id");
+					//mui.toast(movieId);
+					mui.openWindow({
+						url:"detail.html",
+						id:"detail.html",
+						extras:{
+							movieId:movieId
+						}
+					})
+				});
+			
+			})
+		</script>
+		<header class="mui-bar mui-bar-nav">
+			<h1 class="mui-title">首页</h1>
+		</header>
+		<div class="mui-content">
+			<div class="mui-slider">
+				<div class="mui-slider-group">
+					<div class="mui-slider-item">
+						<a href="#"><img src="1.jpg" /></a>
+					</div>
+					<div class="mui-slider-item">
+						<a href="#"><img src="2.jpg" /></a>
+					</div>
+					<div class="mui-slider-item">
+						<a href="#"><img src="3.jpg" /></a>
+					</div>
+					<div class="mui-slider-item">
+						<a href="#"><img src="4.jpg" /></a>
+					</div>
+				</div>
+			</div>
+			<div class="mui-table">
+			</div>
+		</div>
+
+	</body>
+
+</html>

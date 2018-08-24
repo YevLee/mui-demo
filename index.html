@@ -1,0 +1,79 @@
+<!doctype html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="css/mui.min.css" rel="stylesheet" />
+	</head>
+
+	<body>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript">
+			var views = ['pages/home.html', 'pages/shopClass.html', 'pages/shopCart.html', 'pages/person.html']
+			views_style = [{
+					top: '0px',
+					bottom: '51px'
+				}, {
+					top: '45px',
+					bottom: '51px'
+				}, {
+					top: '45px',
+					bottom: '51px'
+				},
+				{
+					top: '45px',
+					bottom: '51px'
+				}
+			]
+			mui.plusReady(function() {
+				var self = plus.webview.currentWebview(); //获取当前页面对象
+				for(var i = 0; i < views.length; i++) {
+					var sub = plus.webview.create(views[i], views[i], views_style[i]); //创建页面
+					if(i > 0) {
+						sub.hide() //隐藏页面
+					}
+					self.append(sub) //显示页面apend()方法在html5plus文档中没有提到，这里的这个方法是将webview对象填充到窗口的方法。           
+				};
+				var activeTab = views[0]; //激活选项卡 
+				var title = document.querySelector('.mui-title');
+				mui.toast(title)
+				mui(".mui-bar-tab").on('tap', 'div', function() {
+					var tab = this.getAttribute('hr'); //  获取点击页面ID
+					if(activeTab == tab) {
+						return;
+					}
+					plus.webview.show(tab); //    显示点击webview   
+					plus.webview.hide(activeTab); //隐藏当前 webview  
+					title.innerHTML = this.querySelector('.mui-tab-label').innerHTML
+					activeTab = tab;
+				})
+
+			})
+		</script>
+		<header class="mui-bar mui-bar-nav">
+		    <h1 class="mui-title">首页</h1>
+		</header>
+		<nav class="mui-bar mui-bar-tab">
+			<div class="mui-tab-item mui-active" hr='pages/home.html'>
+				<span class="mui-icon mui-icon-home"></span>
+				<span class="mui-tab-label">首页</span>
+			</div>
+			<div class="mui-tab-item" hr='pages/shopClass.html'>
+				<span class="mui-icon mui-icon-minus"></span>
+				<span class="mui-tab-label">分类</span>
+			</div>
+
+			<div class="mui-tab-item" hr='pages/shopCart.html'>
+				<span class="mui-icon mui-icon-chatboxes"></span>
+				<span class="mui-tab-label">购物车</span>
+			</div>
+			<div class="mui-tab-item" hr='pages/person.html'>
+				<span class="mui-icon mui-icon-gear"></span>
+				<span class="mui-tab-label">我的</span>
+			</div>
+		</nav>
+	</body>
+
+</html>

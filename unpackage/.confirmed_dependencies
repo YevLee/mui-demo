@@ -1,0 +1,20 @@
+{
+	"index.html": {
+		"resources": [
+			"pages/home.html",
+			"pages/person.html"
+		],
+		"refer": [
+			"pages/shopClass.html",
+			"pages/shopCart.html",
+			"pages/home.html",
+			"pages/person.html"
+		]
+	},
+	"pages/home.html": {
+		"refer": [
+			"pages/detail.html",
+			"pages/detail.html/"
+		]
+	}
+}
